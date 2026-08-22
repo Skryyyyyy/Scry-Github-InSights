@@ -1,6 +1,7 @@
 import { renderTopBanner } from './components/BannerView.js';
 import { renderHeader } from './components/Header.js';
 import { renderVitalityMeter, renderBreakdownGrid } from './components/VitalityMeter.js';
+import { renderProjectOverviewView } from './components/ProjectOverviewView.js';
 import { renderTechStackView } from './components/TechStackView.js';
 import { renderArchitectureView } from './components/ArchitectureView.js';
 import { renderDeepDiveView } from './components/DeepDiveView.js';
@@ -15,7 +16,7 @@ import { storage } from './services/storage.js';
 
 // Application State
 let currentAuditData = null;
-let currentActiveTab = 'architecture';
+let currentActiveTab = 'overview';
 
 // DOM Elements
 const topBannerContainer = document.getElementById('top-banner-container');
@@ -168,7 +169,6 @@ function renderDashboard(data) {
   const p = data.project_overview || {};
   const v = p.vitality_score || {};
   const b = v.breakdown || {};
-  const overallScore = v.overall_score || 0;
 
   dashboardContainer.innerHTML = `
     <!-- Top Repo Overview Banner -->
@@ -201,6 +201,9 @@ function renderDashboard(data) {
 
     <!-- Navigation Tabs Bar -->
     <nav class="dashboard-tabs" id="tab-nav">
+      <button type="button" class="tab-btn ${currentActiveTab === 'overview' ? 'active' : ''}" data-tab="overview">
+        <span>📋 Project Overview</span>
+      </button>
       <button type="button" class="tab-btn ${currentActiveTab === 'architecture' ? 'active' : ''}" data-tab="architecture">
         <span>🏛️ Architecture &amp; Flow</span>
       </button>
@@ -239,7 +242,7 @@ function renderDashboard(data) {
     btn.addEventListener('click', () => {
       document.querySelectorAll('#tab-nav .tab-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      currentActiveTab = btn.getAttribute('data-tab') || 'architecture';
+      currentActiveTab = btn.getAttribute('data-tab') || 'overview';
       renderActiveTab();
     });
   });
@@ -267,6 +270,9 @@ function renderActiveTab() {
 
   stage.innerHTML = '';
   switch (currentActiveTab) {
+    case 'overview':
+      renderProjectOverviewView(stage, currentAuditData);
+      break;
     case 'architecture':
       renderArchitectureView(stage, currentAuditData.architecture);
       break;
@@ -286,7 +292,7 @@ function renderActiveTab() {
       renderQuickstartView(stage, currentAuditData.onboarding_and_usage);
       break;
     default:
-      renderArchitectureView(stage, currentAuditData.architecture);
+      renderProjectOverviewView(stage, currentAuditData);
       break;
   }
 }
