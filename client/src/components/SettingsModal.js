@@ -10,7 +10,7 @@ export function openSettingsModal(container, onSaved) {
     <div class="modal-backdrop" id="settings-modal-backdrop">
       <div class="modal-dialog">
         <div class="modal-header">
-          <h3 class="modal-title">⚙️ GitVision AI &amp; GitHub API Settings</h3>
+          <h3 class="modal-title">⚙️ Scry AI &amp; GitHub API Settings</h3>
           <button type="button" id="close-settings-x" class="btn-icon" style="width: 32px; height: 32px;">
             <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
           </button>
@@ -27,7 +27,7 @@ export function openSettingsModal(container, onSaved) {
                 placeholder="AIzaSy..." 
                 value="${currentSettings.geminiKey || ''}"
               />
-              <p class="form-hint">Enables real-time live LLM inference with Gemini 1.5/2.0 Flash executing <code>gitvision_master_prompt.md</code>. If left blank, GitVision uses the built-in heuristic analysis engine or instant sample benchmarks.</p>
+              <p class="form-hint">Enables real-time live LLM inference with Gemini 1.5/2.0 Flash executing <code>gitvision_master_prompt.md</code>. If left blank, Scry uses the built-in static scanner engine or instant sample benchmarks.</p>
             </div>
 
             <div class="form-group">

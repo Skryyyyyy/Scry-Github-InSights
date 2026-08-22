@@ -25,7 +25,7 @@ demoRouter.get('/', (req, res) => {
 
 /**
  * GET /api/demo/:id
- * Returns the full GitVision JSON analysis for a specific demo
+ * Returns the full Scry JSON analysis for a specific demo
  */
 demoRouter.get('/:id', (req, res) => {
   const { id } = req.params;

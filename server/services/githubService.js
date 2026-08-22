@@ -37,7 +37,7 @@ export function parseGitHubUrl(input) {
 function getGitHubClient(token) {
   const headers = {
     'Accept': 'application/vnd.github.v3+json',
-    'User-Agent': 'GitVision-Repository-Intelligence'
+    'User-Agent': 'Scry-Repository-Intelligence'
   };
 
   if (token) {

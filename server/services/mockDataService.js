@@ -1,5 +1,5 @@
 /**
- * Pre-analyzed high-fidelity sample datasets adhering strictly to the GitVision schema.
+ * Pre-analyzed high-fidelity sample datasets adhering strictly to the Scry schema.
  * Used for instant demo loads, benchmarks, and fallback testing.
  */
 

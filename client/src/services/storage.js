@@ -1,11 +1,11 @@
 /**
- * Local storage manager for GitVision configuration and history
+ * Local storage manager for Scry configuration and history
  */
 
 const STORAGE_KEYS = {
-  SETTINGS: 'gitvision_settings',
-  HISTORY: 'gitvision_history',
-  ACTIVE_REPO: 'gitvision_active_repo'
+  SETTINGS: 'scry_settings',
+  HISTORY: 'scry_history',
+  ACTIVE_REPO: 'scry_active_repo'
 };
 
 export const storage = {

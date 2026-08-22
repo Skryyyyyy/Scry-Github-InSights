@@ -13,7 +13,7 @@ export function openJsonExportModal(data, container) {
     <div class="modal-backdrop" id="json-modal-backdrop">
       <div class="modal-dialog" style="max-width: 860px;">
         <div class="modal-header">
-          <h3 class="modal-title">📦 Export GitVision Audit &amp; Raw JSON Schema</h3>
+          <h3 class="modal-title">📦 Export Scry Audit &amp; Raw JSON Schema</h3>
           <button type="button" id="close-modal-x" class="btn-icon" style="width: 32px; height: 32px;">
             <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
           </button>
@@ -64,13 +64,13 @@ export function openJsonExportModal(data, container) {
   });
 
   container.querySelector('#download-json-btn')?.addEventListener('click', () => {
-    downloadFile(`${cleanFilename}_gitvision_audit.json`, jsonStr, 'application/json');
+    downloadFile(`${cleanFilename}_scry_audit.json`, jsonStr, 'application/json');
   });
 
   container.querySelector('#download-md-btn')?.addEventListener('click', async () => {
     try {
       const md = await exportMarkdownReport(data);
-      downloadFile(`${cleanFilename}_gitvision_report.md`, md, 'text/markdown');
+      downloadFile(`${cleanFilename}_scry_report.md`, md, 'text/markdown');
     } catch (err) {
       alert('Failed to generate markdown report: ' + err.message);
     }

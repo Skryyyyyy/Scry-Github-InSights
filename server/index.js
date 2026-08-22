@@ -41,7 +41,7 @@ app.get('/api/prompt', async (req, res) => {
 // Start Server
 app.listen(config.port, () => {
   console.log(`\n======================================================`);
-  console.log(`🚀 GitVision Server is running on http://localhost:${config.port}`);
+  console.log(`🚀 Scry Server is running on http://localhost:${config.port}`);
   console.log(`📡 Healthcheck: http://localhost:${config.port}/api/health`);
   console.log(`🤖 AI Status: ${config.geminiApiKey ? 'Gemini LLM Key Configured' : 'Offline Heuristic Fallback Ready'}`);
   console.log(`======================================================\n`);

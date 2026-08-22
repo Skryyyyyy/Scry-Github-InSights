@@ -2,7 +2,7 @@
  * Top Rainbow Announcement Banner Component (@fuma-nama/components/banner UI)
  */
 export function renderTopBanner(container) {
-  const STORAGE_KEY = 'banner-gitvision-v1-dismissed';
+  const STORAGE_KEY = 'banner-scry-v1-dismissed';
   
   // Check if previously dismissed
   if (localStorage.getItem(STORAGE_KEY) === 'true') {
@@ -11,14 +11,14 @@ export function renderTopBanner(container) {
   }
 
   container.innerHTML = `
-    <div id="gitvision-rainbow-banner" class="rainbow-banner-wrapper">
+    <div id="scry-rainbow-banner" class="rainbow-banner-wrapper">
       <div class="rainbow-banner-gradient-1"></div>
       <div class="rainbow-banner-gradient-2"></div>
       
       <div class="banner-inner-content">
         <span class="banner-badge-icon">✨</span>
         <span class="banner-message">
-          <strong>GitVision v1.0 Intelligence Engine</strong> — AI Architectural Auditing, Live Mermaid.js Diagrams &amp; Vitality Telemetry.
+          <strong>Scry v1.0 Intelligence Engine</strong> — AI Architectural Auditing, Live Mermaid.js Diagrams &amp; Vitality Telemetry.
         </span>
         <button type="button" id="banner-cta-btn" class="banner-cta">Try Demo &rarr;</button>
       </div>
@@ -32,7 +32,7 @@ export function renderTopBanner(container) {
     </div>
   `;
 
-  const bannerEl = container.querySelector('#gitvision-rainbow-banner');
+  const bannerEl = container.querySelector('#scry-rainbow-banner');
   const closeBtn = container.querySelector('#close-rainbow-banner-btn');
   const ctaBtn = container.querySelector('#banner-cta-btn');
 

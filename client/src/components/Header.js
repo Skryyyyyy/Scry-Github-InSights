@@ -11,7 +11,7 @@ export function renderHeader(container, { onOpenSettings, onOpenHistory, onReset
           <polyline points="2 12 12 17 22 12"></polyline>
         </svg>
       </div>
-      <span>Git<span class="gradient-text">Vision</span></span>
+      <span>Scry</span>
     </div>
 
     <div class="header-actions">

@@ -5,13 +5,13 @@ export const exportRouter = express.Router();
 
 /**
  * POST /api/export/markdown
- * Converts JSON GitVision analysis into a Markdown document
+ * Converts JSON Scry analysis into a Markdown document
  */
 exportRouter.post('/markdown', (req, res) => {
   try {
     const { data } = req.body;
     if (!data) {
-      return res.status(400).json({ success: false, error: 'GitVision JSON data is required.' });
+      return res.status(400).json({ success: false, error: 'Scry JSON data is required.' });
     }
 
     const markdown = generateMarkdownReport(data);

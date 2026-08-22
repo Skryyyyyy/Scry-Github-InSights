@@ -1,5 +1,5 @@
 /**
- * GitVision Backend API Client
+ * Scry Backend API Client
  */
 
 export async function fetchHealth() {

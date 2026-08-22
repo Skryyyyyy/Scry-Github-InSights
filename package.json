@@ -1,8 +1,8 @@
 {
-  "name": "gitvision-insights",
+  "name": "scry-github-insights",
   "version": "1.0.0",
   "type": "module",
-  "description": "GitVision - AI-Powered Architectural Intelligence & Repository Audit Engine",
+  "description": "Scry - AI-Powered Architectural Intelligence & Repository Audit Engine",
   "main": "server/index.js",
   "scripts": {
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
@@ -21,7 +21,7 @@
     "mermaid",
     "gemini"
   ],
-  "author": "GitVision Team",
+  "author": "Scry Team",
   "license": "MIT",
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
