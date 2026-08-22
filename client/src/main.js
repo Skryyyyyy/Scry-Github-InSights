@@ -47,7 +47,7 @@ export function showToast(message, type = 'info') {
     toast.style.opacity = '0';
     toast.style.transform = 'translateY(10px)';
     setTimeout(() => toast.remove(), 300);
-  }, 3500);
+  }, 4500);
 }
 
 /**
@@ -65,6 +65,7 @@ function init() {
       showToast('API Configuration saved successfully', 'success');
     }),
     onOpenHistory: () => openHistoryDrawer(modalContainer, (auditData) => {
+      heroSection.classList.add('hidden');
       renderDashboard(auditData);
     }),
     onReset: () => {
@@ -92,9 +93,6 @@ function init() {
       await loadDemo(demoId);
     }
   });
-
-  // Automatically load default demo to showcase interface immediately
-  loadDemo('nextjs-commerce', false);
 }
 
 /**
@@ -103,7 +101,11 @@ function init() {
 async function executeAnalysis({ repoUrl, branch }) {
   const settings = storage.getSettings();
 
-  showLoading(true, `Auditing ${repoUrl}...`, 'Connecting to repository, parsing file tree & manifests');
+  // Clear previous dashboard content on new search
+  dashboardContainer.classList.add('hidden');
+  dashboardContainer.innerHTML = '';
+
+  showLoading(true, `Auditing ${repoUrl}...`, 'Fetching file tree, static manifests & source contents');
   try {
     const result = await analyzeRepository({
       repoUrl,
@@ -114,13 +116,23 @@ async function executeAnalysis({ repoUrl, branch }) {
 
     if (result.success && result.data) {
       storage.addHistoryItem(result.data);
+      heroSection.classList.add('hidden');
       renderDashboard(result.data);
       showToast(`Successfully analyzed ${result.data.project_overview?.name || repoUrl}!`, 'success');
     } else {
       throw new Error(result.error || 'Failed to complete analysis.');
     }
   } catch (err) {
-    showToast(err.message, 'error');
+    showLoading(false);
+    heroSection.classList.remove('hidden');
+    
+    // Check if error is GitHub API rate limit
+    if (err.message.includes('rate limit') || err.message.includes('403')) {
+      showToast('⚠️ GitHub API Rate Limit Reached. Click ⚙️ Settings (top right) and add a free GitHub Personal Token for 5,000 req/hr limits!', 'error');
+      openSettingsModal(modalContainer);
+    } else {
+      showToast(`Analysis Error: ${err.message}`, 'error');
+    }
   } finally {
     showLoading(false);
   }
@@ -130,17 +142,23 @@ async function executeAnalysis({ repoUrl, branch }) {
  * Loads a pre-analyzed benchmark demo
  */
 async function loadDemo(demoId, showNotification = true) {
+  dashboardContainer.classList.add('hidden');
+  dashboardContainer.innerHTML = '';
+
   showLoading(true, `Loading demo: ${demoId}`, 'Fetching pre-calculated high-fidelity telemetry dataset');
   try {
     const res = await fetchDemoById(demoId);
     if (res.success && res.data) {
       storage.addHistoryItem(res.data);
+      heroSection.classList.add('hidden');
       renderDashboard(res.data);
       if (showNotification) {
         showToast(`Loaded demo: ${res.data.project_overview?.name}`, 'success');
       }
     }
   } catch (err) {
+    showLoading(false);
+    heroSection.classList.remove('hidden');
     showToast(err.message, 'error');
   } finally {
     showLoading(false);
@@ -153,7 +171,6 @@ async function loadDemo(demoId, showNotification = true) {
 function showLoading(isLoading, title = '', status = '') {
   if (isLoading) {
     loadingState.classList.remove('hidden');
-    dashboardContainer.classList.add('hidden');
     document.getElementById('loader-title').textContent = title;
     document.getElementById('loader-status').textContent = status;
   } else {
@@ -170,17 +187,36 @@ function renderDashboard(data) {
   const v = p.vitality_score || {};
   const b = v.breakdown || {};
 
+  const meta = data.github_meta || data.repository || {};
+  const repoName = p.name || meta.name || 'Repository Audit';
+  const ownerName = meta.owner || repoName.split('/')[0] || 'GitHub Author';
+  const ownerAvatar = meta.ownerAvatar || `https://github.com/${ownerName}.png`;
+  const ownerUrl = meta.ownerUrl || `https://github.com/${ownerName}`;
+  const htmlUrl = meta.htmlUrl || (repoName.includes('/') ? `https://github.com/${repoName}` : '#');
+  const stars = meta.stars ?? 0;
+  const forks = meta.forks ?? 0;
+
   dashboardContainer.innerHTML = `
     <!-- Top Repo Overview Banner -->
     <div class="repo-banner-card">
       <div class="repo-info-col">
+        <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; flex-wrap: wrap;">
+          <img src="${ownerAvatar}" width="26" height="26" style="border-radius: 50%; border: 1px solid var(--border-subtle); object-fit: cover;" alt="${ownerName}" onError="this.src='https://github.com/github.png'" />
+          <a href="${ownerUrl}" target="_blank" rel="noopener noreferrer" style="color: var(--accent-cyan); font-size: 0.82rem; font-family: var(--font-mono); text-decoration: none; font-weight: 600;">@${ownerName}</a>
+          <span style="color: var(--text-muted);">·</span>
+          <span style="font-size: 0.8rem; color: #fbbf24;">⭐ ${stars.toLocaleString()}</span>
+          <span style="color: var(--text-muted);">·</span>
+          <span style="font-size: 0.8rem; color: #38bdf8;">🍴 ${forks.toLocaleString()}</span>
+          <a href="${htmlUrl}" target="_blank" rel="noopener noreferrer" class="badge" style="background: rgba(255,255,255,0.06); color: var(--text-primary); text-decoration: none; font-size: 0.75rem; margin-left: 0.4rem;">↗ GitHub</a>
+        </div>
+
         <div class="repo-badge-row">
-          <span class="badge badge-method-get">${p.tech_stack?.primary_language || 'Codebase'}</span>
+          <span class="badge badge-method-get">${p.tech_stack?.primary_language || meta.language || 'Codebase'}</span>
           <span class="badge" style="background: rgba(139, 92, 246, 0.15); color: #c084fc;">${data.architecture?.pattern || 'Architecture'}</span>
         </div>
-        <h2 class="repo-title">${p.name || 'Repository Audit'}</h2>
-        <p class="repo-tagline">${p.tagline || ''}</p>
-        <p class="repo-pitch">💡 ${p.elevator_pitch || ''}</p>
+        <h2 class="repo-title">${repoName}</h2>
+        <p class="repo-tagline">${p.tagline || data.overview || ''}</p>
+        <p class="repo-pitch">💡 ${p.elevator_pitch || data.overview || ''}</p>
 
         <div class="repo-action-bar">
           <button type="button" id="export-json-btn" class="btn-primary" style="font-size: 0.85rem; padding: 0.5rem 1rem;">
@@ -254,6 +290,8 @@ function renderDashboard(data) {
 
   document.getElementById('quick-audit-another-btn')?.addEventListener('click', () => {
     heroSection.scrollIntoView({ behavior: 'smooth' });
+    dashboardContainer.classList.add('hidden');
+    heroSection.classList.remove('hidden');
     repoInput.focus();
   });
 
@@ -277,19 +315,19 @@ function renderActiveTab() {
       renderArchitectureView(stage, currentAuditData.architecture);
       break;
     case 'techstack':
-      renderTechStackView(stage, currentAuditData.project_overview?.tech_stack);
+      renderTechStackView(stage, currentAuditData.tech_stack || currentAuditData.project_overview?.tech_stack);
       break;
     case 'deepdive':
-      renderDeepDiveView(stage, currentAuditData.deep_dive_analysis);
+      renderDeepDiveView(stage, currentAuditData.deep_dive || currentAuditData.deep_dive_analysis);
       break;
     case 'security':
-      renderSecurityAuditView(stage, currentAuditData.risk_and_security_audit);
+      renderSecurityAuditView(stage, currentAuditData.security_and_risk || currentAuditData.risk_and_security_audit);
       break;
     case 'uiux':
       renderUiUxAuditView(stage, currentAuditData.ui_ux_audit);
       break;
     case 'quickstart':
-      renderQuickstartView(stage, currentAuditData.onboarding_and_usage);
+      renderQuickstartView(stage, currentAuditData.quickstart || currentAuditData.onboarding_and_usage);
       break;
     default:
       renderProjectOverviewView(stage, currentAuditData);

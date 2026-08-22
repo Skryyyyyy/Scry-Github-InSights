@@ -1,12 +1,12 @@
 import { copyToClipboard, downloadFile } from '../utils/formatters.js';
 
 /**
- * Onboarding & AI Quickstart View Component
+ * Onboarding & Quickstart View Component — Evidence-Backed
  */
 export function renderQuickstartView(container, onboardingData = {}) {
   const prerequisites = onboardingData.prerequisites || [];
-  const steps = onboardingData.ai_quickstart_steps || [];
-  const envVars = onboardingData.environment_variables || [];
+  const steps = onboardingData.steps || onboardingData.ai_quickstart_steps || [];
+  const envVars = onboardingData.env_vars || onboardingData.environment_variables || [];
 
   container.innerHTML = `
     <!-- Prerequisites -->
@@ -38,14 +38,18 @@ export function renderQuickstartView(container, onboardingData = {}) {
       </h3>
       
       <div class="quickstart-steps-list">
-        ${steps.length > 0 ? steps.map(step => `
+        ${steps.length > 0 ? steps.map(step => {
+          const num = step.order || step.step || 1;
+          const desc = step.description || step.explanation || 'Execute command';
+          const cmd = step.command || '';
+          return `
           <div class="step-card">
-            <div class="step-number">${step.step}</div>
+            <div class="step-number">${num}</div>
             <div class="step-content">
-              <div style="font-weight: 600; color: var(--text-primary); font-size: 0.95rem;">${step.explanation}</div>
+              <div style="font-weight: 600; color: var(--text-primary); font-size: 0.95rem;">${desc}</div>
               <div class="command-box">
-                <code>${step.command}</code>
-                <button type="button" class="copy-btn copy-cmd-btn" data-command="${encodeURIComponent(step.command)}" title="Copy Command">
+                <code>${cmd}</code>
+                <button type="button" class="copy-btn copy-cmd-btn" data-command="${encodeURIComponent(cmd)}" title="Copy Command">
                   <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
@@ -54,7 +58,8 @@ export function renderQuickstartView(container, onboardingData = {}) {
               </div>
             </div>
           </div>
-        `).join('') : `<p style="color: var(--text-muted);">No setup steps extracted.</p>`}
+        `;
+        }).join('') : `<p style="color: var(--text-muted);">No setup steps extracted by static scan.</p>`}
       </div>
     </div>
 
@@ -92,7 +97,7 @@ export function renderQuickstartView(container, onboardingData = {}) {
                 <td>${v.required ? '<span class="badge" style="background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3);">Mandatory</span>' : '<span class="badge" style="background: rgba(255, 255, 255, 0.06); color: var(--text-muted);">Optional</span>'}</td>
                 <td>${v.purpose}</td>
               </tr>
-            `).join('') : `<tr><td colspan="3" style="text-align: center; color: var(--text-muted);">No environment variables required</td></tr>`}
+            `).join('') : `<tr><td colspan="3" style="text-align: center; color: var(--text-muted);">No environment variables required in scanned code</td></tr>`}
           </tbody>
         </table>
       </div>

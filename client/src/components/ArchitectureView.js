@@ -7,7 +7,7 @@ import { copyToClipboard, downloadFile } from '../utils/formatters.js';
 export function renderArchitectureView(container, architectureData = {}) {
   const pattern = architectureData.pattern || 'Modular Architecture';
   const overview = architectureData.overview || 'No architectural summary available.';
-  const mermaidCode = architectureData.logic_flow_mermaid || 'graph TD; Client --> Server';
+  const mermaidCode = architectureData.logic_flow_mermaid || architectureData.mermaid || 'graph TD; Client --> Server';
   const entryPoints = architectureData.entry_points || [];
   const modules = architectureData.modules || [];
 

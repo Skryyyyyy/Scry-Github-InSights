@@ -1,14 +1,14 @@
 /**
- * Tech Stack Matrix View Component
+ * Tech Stack Matrix View Component — Evidence-Backed
  */
 export function renderTechStackView(container, techStack = {}) {
   const groups = [
-    { title: 'Primary & Programming Languages', items: techStack.languages || [techStack.primary_language].filter(Boolean), icon: '⚡' },
+    { title: 'Programming Languages', items: techStack.languages || [techStack.primary_language].filter(Boolean), icon: '⚡' },
     { title: 'Frameworks & Libraries', items: techStack.frameworks || [], icon: '📦' },
     { title: 'Databases & Persistence', items: techStack.databases || [], icon: '🗄️' },
-    { title: 'Caching & Message Queues', items: techStack.caching_and_queues || [], icon: '🔄' },
-    { title: 'DevOps, Cloud & Infrastructure', items: techStack.devops_and_cloud || [], icon: '☁️' },
-    { title: 'Third-Party Services & Integrations', items: techStack.third_party_services || [], icon: '🔌' }
+    { title: 'Caching & Message Queues', items: techStack.caching || techStack.caching_and_queues || [], icon: '🔄' },
+    { title: 'DevOps & Infrastructure', items: techStack.devops || techStack.devops_and_cloud || [], icon: '☁️' },
+    { title: 'Third-Party Services & Integrations', items: techStack.third_party || techStack.third_party_services || [], icon: '🔌' }
   ];
 
   container.innerHTML = `

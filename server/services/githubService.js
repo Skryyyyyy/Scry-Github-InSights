@@ -183,16 +183,21 @@ export async function fetchRepositorySnapshot({ owner, repo, branch = null, toke
   return {
     metadata: {
       name: repoData.full_name,
+      owner: repoData.owner?.login || owner,
+      ownerAvatar: repoData.owner?.avatar_url || `https://github.com/${owner}.png`,
+      ownerUrl: repoData.owner?.html_url || `https://github.com/${owner}`,
       description: repoData.description,
-      stars: repoData.stargazers_count,
-      forks: repoData.forks_count,
-      openIssues: repoData.open_issues_count,
+      stars: repoData.stargazers_count || 0,
+      forks: repoData.forks_count || 0,
+      openIssues: repoData.open_issues_count || 0,
       language: repoData.language,
       topics: repoData.topics || [],
       defaultBranch,
       totalFiles: filePaths.length,
       sampledFilesCount: fileContents.length,
-      htmlUrl: repoData.html_url
+      htmlUrl: repoData.html_url || `https://github.com/${owner}/${repo}`,
+      createdAt: repoData.created_at,
+      updatedAt: repoData.updated_at
     },
     formattedSnapshot,
     fileContents,
