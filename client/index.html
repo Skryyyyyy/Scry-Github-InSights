@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GitVision — AI Repository Intelligence & Architectural Audit Engine</title>
+  <meta name="description" content="Next-generation architectural insights, live Mermaid diagrams, vitality scores, API catalog, and security auditing for GitHub repositories." />
+  
+  <!-- Modern Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- App Stylesheet -->
+  <link rel="stylesheet" href="/src/styles/index.css" />
+  <link rel="stylesheet" href="/src/styles/components.css" />
+  <link rel="stylesheet" href="/src/styles/dashboard.css" />
+</head>
+<body class="theme-dark">
+  <div id="app" class="app-root">
+    <!-- Top Rainbow Announcement Banner (@fuma-nama/banner) -->
+    <div id="top-banner-container"></div>
+
+    <!-- Header Mounted Dynamically -->
+    <header id="header-container" class="site-header"></header>
+
+    <!-- Main Content Stage -->
+    <main id="main-content" class="main-stage">
+      <!-- Hero / Search Section -->
+      <section id="hero-section" class="hero-section">
+        <div class="hero-glow"></div>
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="pulse-dot"></span>
+            <span>GitVision Architectural Intelligence Engine v1.0</span>
+          </div>
+          <h1 class="hero-title">
+            Deep Repository Telemetry &amp; <span class="gradient-text">Architectural Auditing</span>
+          </h1>
+          <p class="hero-subtitle">
+            Transform any GitHub repository or source snapshot into interactive Mermaid.js diagrams, vitality scores, API catalog, security audits, and instant onboarding steps.
+          </p>
+
+          <!-- Search Input Box -->
+          <div class="search-box-wrapper">
+            <form id="analyze-form" class="search-form">
+              <div class="input-icon-wrapper">
+                <svg class="icon-github" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+                  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                </svg>
+                <input 
+                  type="text" 
+                  id="repo-input" 
+                  placeholder="Enter GitHub URL or slug (e.g. vercel/next.js, facebook/react, fastapi/fastapi)" 
+                  autocomplete="off" 
+                  spellcheck="false"
+                  required
+                />
+              </div>
+              <input 
+                type="text" 
+                id="branch-input" 
+                placeholder="branch (optional)" 
+                class="branch-input"
+                autocomplete="off"
+              />
+              <button type="submit" id="analyze-btn" class="btn-primary">
+                <span class="btn-text">Audit Codebase</span>
+                <svg class="btn-arrow" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </button>
+            </form>
+          </div>
+
+          <!-- Quick Demo Badges -->
+          <div class="demo-chips-container">
+            <span class="demo-label">Instant Demos:</span>
+            <div id="demo-chips" class="demo-chips-list">
+              <button type="button" class="demo-chip" data-demo="nextjs-commerce">
+                <span class="chip-dot dot-cyan"></span> Next.js Commerce (93/100)
+              </button>
+              <button type="button" class="demo-chip" data-demo="fastapi-microservice">
+                <span class="chip-dot dot-emerald"></span> FastAPI Microservice (89/100)
+              </button>
+              <button type="button" class="demo-chip" data-demo="rust-hyper-cli">
+                <span class="chip-dot dot-orange"></span> Rust Hyper CLI (96/100)
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Loading State -->
+      <section id="loading-state" class="loading-container hidden">
+        <div class="loader-pulse-ring"></div>
+        <div class="loader-content">
+          <div class="loader-spinner"></div>
+          <h3 id="loader-title" class="loader-title">Synthesizing Repository Intelligence...</h3>
+          <p id="loader-status" class="loader-status">Fetching tree manifest and running GitVision architectural pipeline</p>
+          <div class="loading-progress-bar">
+            <div class="progress-fill"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Dashboard Result View Container -->
+      <section id="dashboard-container" class="dashboard-wrapper hidden"></section>
+    </main>
+
+    <!-- Modals Container -->
+    <div id="modal-container"></div>
+    
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- History Drawer -->
+    <div id="history-drawer" class="history-drawer hidden"></div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
